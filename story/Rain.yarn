@@ -1,0 +1,746 @@
+
+title: Rain_Start
+position: -378,-314
+color: red
+---
+本作改编自湖中羊的COC模组，为了避免剧透我会在结尾处给出模组名字
+希望你游玩愉快。
+******
+这是一个晴朗的午后，正是一个休闲摸鱼的好时候。
+但是为了应付该死的高等数学，你提前到了201教室，准备好好预习一下。
+现在是下午一点，高数课程要下午三点才开始。
+教室里只有你一个人。
+你沉浸在自己的世界中，认真地在高数书上画着小人。
+没有意识到周围的温度逐渐降低。
+渐渐地，潮湿的气息弥漫开来。
+不知道在什么时候，一场突如其来的大雨笼罩了整个校园
+<<declare $rain_event = 0>>
+<<declare $key = 0>>
+<<declare $plier = 0>>
+<<declare $once_rain_coat = 0>>
+<<declare $black_rain_coat = 0>>
+<<declare $is_cold = 0>>
+<<declare $deep_rain = 0>>
+<<declare $tea = 1>>
+<<declare $e_key = 1>>
+
+<<declare $observation = 70>>
+<<declare $inspiration = 70>>
+
+<<declare $hp = 20>>
+<<declare $san = 20>>
+
+-> 开始游戏
+    <<jump Rain_201>>
+===
+
+title: Rain_201
+position: 330,-277
+color: green
+group: Rain_2f
+---
+<<once>>
+你环顾四周，只能看到窗外的大雨。
+好在窗户紧闭，没有雨水渗进来。
+你仔细听，发现窗外除了哗哗的雨声以外，听不见什么吵闹的声音。
+房间外的走廊也听不到有人走动的声音。
+在雨声下，教室显得格外安静。
+<<endonce>>
+你正在201教室，你决定：
+-> 调查黑板
+    <<jump Rain_201_Blackboard>>
+-> 调查房间
+    <<jump Rain_201_Classroom>>
+-> 查看手机
+    <<jump Rain_201_Phone>>
+-> 离开教室
+    <<jump Rain_2f_Hallway>>
+===
+
+title: Rain_201_Blackboard
+position: 26,-456
+color: green
+group: Rain_2f
+---
+你走到黑板前，发现黑板上用湿了的白色粉笔写着：
+“死亡不是最糟糕的结局”
+-> 继续探索
+    <<jump Rain_201>>
+===
+
+title: Rain_201_Classroom
+position: 15,-75
+color: green
+group: Rain_2f
+---
+<<once>>
+房间里什么人都没有。
+你在教室里四处走动，最终在一张出入口的椅子上发现了一张半湿的纸条。
+奇怪的是，纸条周围并没有其他被水打湿的痕迹。
+-> 查看纸条
+    <<if dice(100) <= $observation>> // 观察
+        纸条上写着：“一楼的传达室有雨具”
+    <<else>>
+        你无法看清被水浸泡的变形了的字迹。
+    <<endif>>
+<<endonce>>
+除了这张纸条，房间里并没有其他有用的东西。
+-> 继续探索
+    <<jump Rain_201>>
+===
+
+title: Rain_201_Phone
+position: 21,-294
+color: green
+group: Rain_2f
+---
+<<once>>
+你掏出手机，已经1点半了，发现有一条班长的未读消息。
+“由于天气原因，下午的所有课程取消，大家早点回寝室。”
+短信是一点钟发的，不知道为什么没有提示音响起。
+<<endonce>>
+-> 扣会儿手机
+    -> 打开社交媒体
+        你打开了社交媒体，刷了一会儿无聊的内容。
+        <<if dice(100) <= $inspiration>> // 灵感
+            你偶然发现，网络上的东西都是一点钟发布的，
+        <<endif>>
+    -> 打开聊天软件
+        你打开聊天软件，发现没有什么新消息。
+        给好朋友随便发了几条消息，却也没有得到回复。
+        <<if dice(100) <= $inspiration>> // 灵感
+            你注意到，好友最后上线时间也是一点钟。
+        <<endif>>
+-> 继续探索
+    <<jump Rain_201>>
+把手机锁上，你开始继续探索。
+<<jump Rain_201>>
+===
+
+title: Rain_2f_Hallway
+position: 567,-134
+color: green
+group: Rain_2f
+---
+<<once>>
+走廊的一侧没有安装玻璃，所以此时有半条走廊已经被雨水打湿了。
+<<if dice(100) <= 70>> // 灵感
+    虽然现在即便走到被打湿的地面上也感觉不到雨滴被吹进来，可是想来在雨大的时候这里也不能成为避雨的场所吧。
+<<endif>>
+走廊的一侧是教室，分别是刚刚你出来的201、还有202和203。
+走廊的尽头就是楼梯，可以通往三楼或者一楼。
+楼梯旁边还有一部货运电梯，半年前就已经因为故障停止使用了。
+校方也没有着急修理，电梯门上挂着一条粗大的锁链。
+<<endonce>>
+<<if $rain_event == 1>>
+    <<once>>
+        走廊的雨变得很大，雨水直直地打在走廊的地面上，几乎半条走廊都被雨水覆盖。
+    <<endonce>>
+<<endif>>
+你正在2楼的走廊，你决定：
+-> 回到201教室
+    <<jump Rain_201>>
+-> 调查202教室
+    <<jump Rain_202>>
+-> 调查203教室
+    <<jump Rain_203>>
+-> 调查2楼电梯
+    <<jump Rain_2f_Elevator>>
+-> 上楼
+    <<if visited("Rain_Water_Trace") == false && dice(100) <= $observation>>
+        <<detour Rain_Water_Trace>>
+    <<endif>>
+    <<jump Rain_3f_Hallway>>
+-> 下楼
+    <<if visited("Rain_Water_Trace") == false && dice(100) <= $observation>>
+        <<detour Rain_Water_Trace>>
+    <<endif>>
+    <<jump Rain_1f_Hallway>>
+-> 跳楼
+    这里是二楼，你跳下楼去，不小心扭伤了脚。
+    <<set $hp -= 2>>
+    <<if $hp <= 5 && $hp > 0>>
+        你感觉身体很痛，痛的要死，好像不光是脚，腿部也可能受伤了。
+    <<endif>>
+    <<if $hp <= 0>>
+        <<jump Rain_End_3>>
+    <<endif>>
+    <<jump Rain_Rain>>
+===
+
+title: Rain_202
+position: 325,-96
+color: green
+group: Rain_2f
+---
+202教室非常空旷，黑板上用湿了的白色粉笔写着：
+“死亡是否最糟糕的结局”
+-> 返回走廊
+    <<jump Rain_2f_Hallway>>
+===
+
+title: Rain_203
+position: 323,96
+group: Rain_2f
+color: green
+---
+203教室非常空旷，黑板上用湿了的白色粉笔写着：
+“死亡......结局”
+死亡与结局中间的字符似乎写了又被人抹去，无法看清。
+-> 返回走廊
+    <<jump Rain_2f_Hallway>>
+===
+
+title: Rain_2f_Elevator
+position: 886,-125
+color: green
+group: Rain_2f
+---
+<<if $plier == 0>>
+    这个许久未使用的电梯上面贴着“禁止使用”的警告。
+    电梯门上挂着巨大的铁索与粗壮的铁链，看起来没有工具是完全无法打开的。
+    <<if dice(100) <= 70>> // 聆听
+        你能听到微弱的水声从电梯门后传来，似乎是电梯井漏水了。
+    <<endif>>
+<<else>>
+    你带着液压钳来到了二楼的电梯门口，你要打开这扇门么？
+    -> 打开
+        你剪开电梯前的锁链，撬开了电梯门。
+        电梯正好停在这一层，内部十分干燥，正对的走廊的那那面电梯墙壁上用白色的喷漆罐喷着：
+        “真相或是自由，任选其一”
+        同时，电梯里摆着一套纯黑色厚重雨具。
+        直觉告诉你，穿着这种雨具完全不会淋湿。
+        除此之外，墙上还挂着你的证件照片。
+        <<if $deep_rain == 1>>
+            但奇怪的是，证件照片已经湿了，但是整个电梯里都是干燥的。
+            <<if dice(100) <= $inspiration>>
+                你预感到，如果就这么离开教学楼，或许会有不好的事情发生。
+            <<endif>>
+        <<endif>>
+        <<set $black_rain_coat = 1>>
+    -> 还是算了
+        <<jump Rain_2f_Hallway>>
+<<endif>>
+-> 返回走廊
+    <<jump Rain_2f_Hallway>>
+===
+
+title: Rain_3f_Hallway
+position: 578,338
+color: yellow
+group: Rain_3f
+---
+<<once>>
+登上三楼的地板，你发现紧邻着的通向四楼的楼梯被一道铁门阻隔了。
+三楼走廊上的水迹比二楼的还要严重，或许是因为比二楼高的远古，整个走廊上都有着一层薄薄的积水。
+<<endonce>>
+<<if $rain_event == 1>>
+    <<once>>
+    走廊的雨变得很大，整条走廊都几乎被雨水覆盖，如果不穿雨衣从这中间走过去，想必会淋得一身湿。
+    <<endonce>>
+<<endif>>
+你正在三楼的走廊，你决定：
+-> 调查三楼的教室
+    <<jump Rain_3f_Rooms>>
+-> 调查走廊尽头的档案室
+    <<jump Rain_Archives_Room>>
+-> 调查三楼的电梯
+    <<jump Rain_3f_Elevator>>
+-> 上楼
+    <<if $key == 0>>
+        你查看了通往四楼的铁门。
+        显然，没有钥匙是无法前进的。
+        <<jump Rain_3f_Hallway>>
+    <<else>>
+        <<once>>
+        你拿出钥匙，打开了通往四楼的铁门。
+        <<endonce>>
+        <<if visited("Rain_Water_Trace") == false && dice(100) <= $observation>>
+            <<detour Rain_Water_Trace>>
+        <<endif>>
+    <<endif>>
+    <<jump Rain_4f_Hallway>>
+-> 下楼
+    <<if visited("Rain_Water_Trace") == false && dice(100) <= $observation>>
+        <<detour Rain_Water_Trace>>
+    <<endif>>
+    <<jump Rain_2f_Hallway>>
+-> 跳楼
+    这里是三楼，你跳下楼去，狠狠地扭伤了脚，甚至落地的时候手腕也被扭到了。
+    <<set $hp -= dice(3)>>
+    <<if $hp <= 5 && $hp > 0>>
+        你感觉身体很痛，痛的要死，好像不光是脚，腿部也可能受伤了。
+    <<endif>>
+    <<if $hp <= 0>>
+        <<jump Rain_End_3>>
+    <<endif>>
+    <<jump Rain_Rain>>
+===
+
+title: Rain_Water_Trace
+position: 1428,-428
+color: purple
+---
+在途径楼梯的时候，你发现有一条很淡的水痕在楼梯的里侧，这条痕迹似乎从最上层一直到最下层。
+===
+
+title: Rain_3f_Rooms
+position: 310,353
+color: yellow
+group: Rain_3f
+---
+三楼的教室都是上锁的，大部分的房间都被不明物质堵住了。
+而且教室在靠近走廊这一侧也没有窗户，看来是进不去了。
+-> 返回三楼走廊
+    <<jump Rain_3f_Hallway>>
+===
+
+title: Rain_3f_Elevator
+position: 891,339
+color: yellow
+group: Rain_3f
+---
+<<if $plier == 0>>
+    这个许久未使用的电梯上面贴着“禁止使用”的警告。
+    电梯门上挂着巨大的铁索与粗壮的铁链，看起来没有工具是完全无法打开的。
+    <<if dice(100) <= 70>> // 聆听
+        你能听到微弱的水声从电梯门后传来，似乎是电梯井漏水了。
+    <<endif>>
+<<else>>
+    你带着液压钳来到了三楼的电梯门口，你要打开这扇门么？
+    -> 打开
+        你剪开电梯前的锁链，撬开了电梯门。
+        电梯不停在这一层。你向里望去，发现电梯停留在二楼。
+    -> 还是算了
+        <<jump Rain_3f_Hallway>>
+<<endif>>
+-> 返回三楼走廊
+    <<jump Rain_3f_Hallway>>
+===
+
+title: Rain_Archives_Room
+position: 313,544
+color: yellow
+group: Rain_3f
+---
+// 如果没有钥匙，无法进入档案柜，会跳回
+<<if $key == 0>>
+    你来到档案室的门口，发现档案室被紧紧锁住。
+    好消息是，档案室的门锁看起来还能使用。
+    坏消息是，你并没有发现档案室的钥匙。
+    <<if dice(100) <= $inspiration>> // 灵感
+        或许传达室大爷那里会有档案室的钥匙吧。
+    <<endif>>
+    -> 返回三楼走廊
+    <<jump Rain_3f_Hallway>>
+<<endif>>
+<<if $rain_event < 1>>
+    <<set $rain_event = 1>>
+<<endif>>
+// 剧情会进入下一阶段哦！
+<<once>>
+    在你打开档案室大门的时候，你听到外面的雨声忽然变大。
+    你回头向走廊看去，发现雨水已经被风吹进了走廊里，整个走廊都被雨水覆盖。
+    档案室是一件不大的房间，房间中只有五六个大铁柜来盛放档案。
+<<endonce>>
+你正在档案室中，你决定：
+-> 搜索档案室
+    <<jump Rain_Archives_Room_Detail>>
+-> 调查档案柜
+    <<jump Rain_Archives_Room_Cabinet>>
+-> 返回三楼走廊
+    <<once>>
+        当你走出传达室的时候，你看到教学楼外的雨幕中有一个巨大的黑色形体。
+        雨很大，你看不清那个黑色的东西究竟是什么。
+        但是在片刻之后，你看到黑影动了一下，似乎是发现了你。
+        他在顷刻间消失了。
+        // SAN CHECK
+    <<endonce>>
+    <<jump Rain_3f_Hallway>>
+===
+
+title: Rain_Archives_Room_Detail
+position: -1,352
+color: yellow
+group: Rain_3f
+---
+你翻遍档案室，在档案室的门后面发现了一套一次性雨具。
+<<set $once_rain_coat = 1>>
+<<jump Rain_Archives_Room>>
+===
+
+title: Rain_Archives_Room_Cabinet
+position: -3,546
+group: Rain_3f
+color: yellow
+---
+你打开了档案柜，除了一些陈旧的学校工作报告以外，唯一有用的就是关于电梯维修的部分，
+上面写着四楼的电梯门由于某些原因无法上锁，因此要小心不要让学生接近。
+<<jump Rain_Archives_Room>>
+===
+
+title: Rain_1f_Hallway
+position: 584,-737
+color: blue
+group: Rain_1f
+---
+<<once>>
+一层的走廊上没有积水，这说明在雨大的时候这里也不会有雨滴飞进来。
+在这一层可以看到表示着“传达室”，“学生事务处”和“会议室”的三个房间，以及走廊尽头的电梯。
+<<endonce>>
+<<if visited("Rain_Water_Trace")>>
+    <<once>>
+    你发现楼梯上的水痕，一直延伸到会议室。
+    <<endonce>>
+<<endif>>
+你正在一楼的走廊，你决定：
+-> 调查传达室
+    <<jump Rain_Communication_room>>
+-> 调查学生事务处
+    <<jump Rain_Student_Room>>
+-> 调查会议室
+    <<jump Rain_Meeting_Room>>
+-> 调查一楼的电梯
+    <<jump Rain_1f_Elevator>>
+-> 返回二楼
+    <<jump Rain_2f_Hallway>>
+-> 走出大门
+    <<jump Rain_Rain>>
+===
+
+title: Rain_Communication_room
+position: 265,-1290
+color: blue
+group: Rain_1f
+---
+传达室的门并没有锁，你轻松地推开门进去了。
+<<if $tea == 1 && $is_cold == 1>>
+    你在传达室内搜索了一圈，在门卫老大爷的桌子上发现了一杯热茶。
+    要喝下这杯热茶暖暖身子么？
+    // todo: 恢复体温
+    -> 喝下热茶
+        <<set $tea = 0>>
+        <<set $is_cold = 0>>
+    -> 先不喝了
+<<endif>>
+<<if dice(100) <= $observation>> // 观察
+    <<once>>
+        你在桌子旁边发现了一份报纸，报纸上的内容大部分都已经被打湿了无法辨认。
+        可读的部分写着：最近几日天气晴朗，适合外出
+        <<if dice(100) <= $inspiration>> // 灵感
+            你发现这张报纸是昨天的，今天的这场大雨或许是不正常的。
+        <<endif>>
+    <<endonce>>
+<<endif>>
+-> 返回一楼走廊
+<<jump Rain_1f_Hallway>>
+
+===
+title: Rain_Student_Room
+position: 305,-741
+color: blue
+group: Rain_1f
+---
+学生事务处里有两张宽大的办公桌和几个小一些的办公隔间。
+在房间的两侧有着两排的档案柜。
+-> 调查档案柜
+    <<jump Rain_Student_Room_Cabinet>>
+-> 调查办公桌
+    <<jump Rain_Student_Room_Desk>>
+-> 返回一楼走廊
+    <<jump Rain_1f_Hallway>>
+===
+
+title: Rain_Student_Room_Cabinet
+position: -2,-745
+color: blue
+group: Rain_1f
+---
+你打开档案柜，发现里面都是历代以来的学生资料。
+是否要寻找自己的档案？
+-> 是
+    你仔细翻找，但是没有看到自己的档案资料。
+    <<if dice(100) <= $observation>>
+        但是意外的是，你找到了你所在班级的档案，档案上却没有你的名字。
+        班级的合照里也没有你的身影。
+        见到如此反常的一幕，你收到了一些惊吓。
+        <<set $san -= dice(3)>>
+    <<endif>>
+-> 否
+档案柜里没什么别的重要的东西了。
+->继续调查
+<<jump Rain_Student_Room>>
+===
+
+title: Rain_Student_Room_Desk
+position: -2,-927
+color: blue
+group: Rain_1f
+---
+你在办公桌上面发现了传达室保安大爷的外套。
+里面装着一串钥匙，显然可以打开楼层里的各个房间。
+<<set $key = 1>>
+-> 继续探索
+    <<jump Rain_Student_Room>>
+===
+
+title: Rain_Meeting_Room
+position: 276,-1058
+color: blue
+group: Rain_1f
+---
+<<once>>
+你打开会议室的大门，发现整个会议室都变成了一间水帘洞。
+地上，桌子上，到处都是水迹。
+而且房顶上还断断续续的有水滴滴下来发出声音。哪怕站在这间屋子的门口，都能感受到彻骨的寒意。
+<<endonce>>
+-> 进入房间
+    <<if $once_rain_coat == 1>>
+        你穿上雨衣，进入了房间。尽管很寒冷，但是没有被雨水淋湿。
+    <<else>>
+        <<set $hp -= dice(3)>>
+        房间里寒冷刺骨，你感觉自己几乎被冻伤了。
+        <<if $hp <= 5 && $hp > 0>>
+            你的腿部被冻的僵硬，几乎无法正常行走。
+        <<endif>>
+        <<if $hp <= 0>>
+            <<jump Rain_End_3>>
+        <<endif>>
+    <<endif>>
+
+    <<if $deep_rain == 1>>
+        你在一个不起眼的角落里，发现了一张纸，上面写着你的名字。
+        纸条是干燥的，但是你的名字已经被打湿了。
+    <<endif>>
+    -> 返回一楼走廊
+    <<jump Rain_1f_Hallway>>
+-> 返回一楼走廊
+<<jump Rain_1f_Hallway>>
+===
+
+title: Rain_1f_Elevator
+position: 857,-892
+color: blue
+group: Rain_1f
+---
+<<if $plier == 0>>
+    这个许久未使用的电梯上面贴着“禁止使用”的警告。
+    电梯门上挂着巨大的铁索与粗壮的铁链，看起来没有工具是完全无法打开的。
+    但是显而易见的是，有水从电梯井里渗出，电梯很明显已经漏水了
+<<else>>
+    你带着液压钳来到了一楼的电梯门口，你要打开这扇门么？
+    -> 打开
+        你剪开电梯前的锁链，撬开了电梯门。
+        <<if $deep_rain == 1>>
+            电梯里有大量的积水喷涌而出，与之相随的是一个和你穿着相同衣服的人也被冲了出来。
+            你看向他的脸，发现和你一摸一样。
+            一瞬间，你陷入了昏迷。
+            等你再次醒来之后，发现自己穿着黑色雨衣趴在一楼的走廊里，另一具身体已经不见了。
+            渐渐地，雨越下越大，最终淹没了整个教学楼。
+            你在雨水中失去了意识。
+            进入结局一。
+            <<jump Rain_End_1>>
+        <<else>>
+            电梯里有大量的积水喷涌而出，几乎将你冲倒。
+        <<endif>>
+    -> 还是算了
+        <<jump Rain_1f_Hallway>>
+<<endif>>
+-> 返回走廊
+    <<jump Rain_1f_Hallway>>
+
+===
+
+title: Rain_Rain
+position: 1429,-118
+color: purple
+---
+<<once>>
+    雨水很大，大到你几乎看不清雨里的东西，视野几乎只有一米远。
+<<endonce>>
+<<if $black_rain_coat == 1>>
+    你感到这个厚重的雨具可以完全遮挡大雨，即使只能看到短短的距离，你也可以慢慢地行走。
+    你缓慢的向着宿舍楼走去，雨水逐渐变大。
+    但是当你走到了宿舍楼下之后，你忽然发现，雨已经停了。
+    从宿舍楼里出来的同学向你打招呼，问你从哪搞来了这么厚的雨衣。
+    你也同他们打招呼，脱下雨衣。
+    发现天空一片晴朗。
+    进入结局一。
+    <<jump Rain_End_1>>
+<<elseif $once_rain_coat == 1>>
+    你穿着单薄的一次性雨衣走进雨中，尽管略有用处，但是依然无法阻挡雨水迸溅到你身上。
+    你在雨中探索，在教学楼外的一棵树上，发现了树干上用小刀刻着的痕迹。
+    “现在回头还来得及”
+    在这行字下方还刻着一个怪异的图形。
+    <<if dice(100) <= $inspiration >>
+        你感觉到这个图形似乎是某种怪物的轮廓。
+        看着这个图形让你有些眩晕。
+        <<set $san -= dice(3)>>
+    <<else>>
+        你看不出这是一个什么图形。
+    <<endif>>
+    还要继续探索么？
+    -> 是
+        <<jump Rain_Deep_Rain>>
+    -> 回到教学楼
+        <<jump Rain_1f_Hallway>>
+
+<<else>>
+    你没带着任何装备就闯入了雨中，很快，你浑身都湿透了。
+    <<jump Rain_Deep_Rain>>
+<<endif>>
+===
+
+title: Rain_Deep_Rain
+position: 1439,277
+color: purple
+---
+雨是如此之大。
+大到让人看不见自己面前到底有什么东西。
+密集的雨滴滴落在你身上的感觉就好像自己正在水中游泳一般。
+就连口鼻的呼吸都因为过于密集的雨水而变的困难。
+睁开的双眼也被雨滴击打的睁不开了。
+整个世界好像都变得好远，在你的感官中，只剩下连续不断的雨声，和皮肤上传来的潮湿感。
+然后在某一个时刻，整个世界都安静了……
+你在这种死寂一般的安静中感到了恐惧，你惊恐的张开双眼想要看一看周围发生了什么。
+然而眼前的景象早已经不再是暴雨中了，从身体感受到的压迫感和水流的触感，你能够确定这里是某处极深的水下世界。
+同时你也本能地知道，这里，在这片无光的幽邃深水中不仅仅只有你一个人。
+某种难以名状的巨大存在就在你的四周。
+虽然你的眼睛耳朵或者其它的感官都无法提供给你这件事的证据，可是你就是知道。
+那个巨大的存在就在这里，围绕着你。
+然后在某一个不知道是下一秒还是百年以后的时刻，一只巨大到无法用语言描述的眼睛突然出现在了你的面前…………
+******
+突然，你从一楼的走廊上醒来，浑身都湿透了，身上的衣服好像拧不干一样，一直都能拧出水来。
+<<set $deep_rain = 1>>
+<<jump Rain_1f_Hallway>>
+//
+===
+
+title: Rain_4f_Hallway
+position: 586,880
+color: orange
+group: Rain_4f
+---
+你来到了四楼，这里整层地板上都有水渍，
+楼梯上的水痕一直延伸到杂物间的门口。
+->前往杂物间
+    <<jump Rain_4f_Sundry>>
+->调查四楼电梯
+    <<jump Rain_4f_Elevator>>
+->下楼
+    <<jump Rain_3f_Hallway>>
+===
+
+title: Rain_4f_Sundry
+position: 329,871
+color: orange
+group: Rain_4f
+---
+杂物间是一间比普通教室大一倍的房间.
+里面堆满了学校从各个时期就开始存放的，一些有朝一日可能会再次派上用场的东西。
+只不过常年的无人照看已经让这个房间里落了一层厚厚的灰尘。
+你在杂物间中翻找，找到了一把勉强可以使用的液压钳。
+以及电梯门上的特制钥匙。
+<<set $plier = 1>>
+<<set $e_key = 1>>
+-> 返回四楼走廊
+<<jump Rain_4f_Hallway>>
+===
+
+title: Rain_4f_Elevator
+position: 894,862
+color: orange
+group: Rain_4f
+---
+<<if $e_key == 0>>
+    你看向电梯门，上面用掉色的红色颜料写着：
+    “有的时候，真实比死亡更危险”。
+    这个电梯门并不像其他电梯门一样被锁链锁住。但是仍然需要一个专门的钥匙来打开。
+    你翻找了一下，电梯的钥匙并不在保安大爷的钥匙串上。
+<<else>>
+    你找到了四楼电梯门的钥匙，你要打开么？
+    -> 打开
+        你打开了电梯门，发现电梯并没有停在这一层。
+        你顺着光亮看向电梯井，发现电梯井的墙壁上有一行文字。
+        “真相和自由，二者不可兼得”。
+        你要探进去查看么？
+        -> 要
+            你伸头向下望去，发现电梯停留在二楼。
+            <<if dice(100) <= 30>>
+                突然，有冰冷的液体滴落到你的脖子上，你被吓了一跳。
+                // 掉了下去
+                <<if dice(100) <= 30>>
+                    你因为这突入起来的惊吓不慎跌落电梯井，掉到了电梯上面。
+                    <<set $hp -= dice(5)>>
+                    <<if $hp <= 5 && $hp > 0>>
+                        你的腿部被非常严重的扭伤，以至于你的行动都有一些困难。
+                    <<endif>>
+                    <<if $hp <= 0>>
+                        <<jump Rain_End_3>>
+                    <<endif>>
+                    遗憾的是，电梯并没有上通风口，尽管你甩了下来，但还是狼狈的从四楼电梯门爬了出去
+                    -> 返回走廊
+                    <<jump Rain_4f_Hallway>>
+                <<endif>>
+            <<endif>>
+            // 没掉下去
+            但是下面除了一个电梯以外，什么也没有
+            -> 返回走廊
+                <<jump Rain_4f_Hallway>>
+        -> 还是算了
+            <<jump Rain_4f_Hallway>>
+    -> 还是算了
+        <<jump Rain_4f_Hallway>>
+<<endif>>
+-> 返回走廊
+    <<jump Rain_4f_Hallway>>
+===
+
+title: Rain_End_1
+position: 915,1210
+group: end
+color: red
+---
+随着大雨的停止，刚才经历的一切好像都是噩梦一样。
+几天后，你完全忘记了这一场异常的大雨和空旷的教学楼
+只是在之后的日子里，你时常对大雨感到恐惧。
+你总是害怕着雨中有什么可怖的存在。
+<<jump Rain_Ending>>
+===
+
+title: Rain_End_2
+position: 594,1220
+group: end
+color: red
+---
+最终，你还是被雨水吞没了。
+这个世界与你再无关系。
+在永不停歇的雨幕中侍奉你新的主人吧。
+那才是你余生所有的价值。
+<<jump Rain_Ending>>
+===
+
+title: Rain_End_3
+position: 311,1228
+group: end
+color: red
+---
+死亡不是最糟糕的结局。
+所以恭喜你。
+你真正意义上地。
+死去了。
+起码避免了最糟糕的结局，不是么？
+<<jump Rain_Ending>>
+===
+
+title: Rain_Ending
+position: 603,1604
+group: end
+color: red
+---
+感谢您的游玩！本作改编自湖中羊的COC模组，别淋湿。
+希望您玩的愉快！
+有什么问题可以和作者反应哦~
+感谢您的建议！
+我们下次再见吧！
+===
